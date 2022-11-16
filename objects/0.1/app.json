@@ -1,0 +1,45 @@
+{
+  "id": "7ff746d9-2474-4ee5-a43e-d3276f8f0419",
+  "name": "DC to OPP Advices",
+  "publisher": "github.com/document-capture",
+  "version": "1.0.0.0",
+  "brief": "",
+  "description": "",
+  "privacyStatement": "",
+  "EULA": "",
+  "help": "",
+  "url": "",
+  "logo": "",
+  "dependencies": [
+    {
+      "id": "6da8dd2f-e698-461f-9147-8e404244dd85",
+      "name": "Continia Document Capture",
+      "publisher": "Continia Software",
+      "version": "1.0.0.0"
+    },
+    {
+      "id": "88cf5d4c-8afc-4a98-9cb7-212196c51d74",
+      "name": "Continia OPplus",
+      "publisher": "Continia Software",
+      "version": "1.0.0.0"
+    }
+  ],
+  "screenshots": [],
+  "platform": "1.0.0.0",
+  "application": "21.0.0.0",
+  "idRanges": [
+    {
+      "from": 61150,
+      "to": 61159
+    }
+  ],
+  "resourceExposurePolicy": {
+    "allowDebugging": true,
+    "allowDownloadingSource": true,
+    "includeSourceInSymbolFile": true
+  },
+  "runtime": "10.0",
+  "features": [
+    "NoImplicitWith"
+  ]
+}
