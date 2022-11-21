@@ -2,14 +2,14 @@
   "id": "7ff746d9-2474-4ee5-a43e-d3276f8f0419",
   "name": "DC to OPP Advices",
   "publisher": "github.com/document-capture",
-  "version": "1.0.1.0",
-  "brief": "",
-  "description": "",
+  "version": "1.1.0.0",
+  "brief": "Extension for Document Capture to process payment advices with Document Capture",
+  "description": "With this extension you can capture and register OPplus Payment advices with Document Capture into payment journals",
   "privacyStatement": "",
   "EULA": "",
-  "help": "",
-  "url": "",
-  "logo": "",
+  "help": "https://github.com/document-capture/Import-OPplus-payment-advices/wiki/",
+  "url": "https://github.com/document-capture/Import-OPplus-payment-advices",
+  "logo": "./res/images/logo.png",
   "dependencies": [
     {
       "id": "6da8dd2f-e698-461f-9147-8e404244dd85",
@@ -24,7 +24,7 @@
       "version": "1.0.0.0"
     }
   ],
-  "screenshots": [],
+  "screenshots": ["./res/images/01-Document-Card.png","./res/images/02-Registered-Document-in-Import-Journal.png","./res/images/03-Registered-Import-Journal-Lines.png"],
   "platform": "1.0.0.0",
   "application": "21.0.0.0",
   "idRanges": [
