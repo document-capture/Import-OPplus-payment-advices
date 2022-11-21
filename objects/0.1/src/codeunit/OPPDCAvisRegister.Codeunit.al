@@ -7,12 +7,10 @@ codeunit 61150 "OPP DC Avis - Register"
         CDCTemplate: Record "CDC Template";
         CDCTemplateField: Record "CDC Template Field";
         ImpInterfaceTemplField: Record "CDC Template Field";
-        //Setup: Record "CDC Document Capture Setup";
         OPPPmtImpSetup: Record "OPP Pmt. Import Setup";
-        OPPImportLines: Record "OPP Pmt. Import Line";
         PmtImportRegister: Record "OPP Pmt. Import Register";
         TempDocumentLine: Record "CDC Temp. Document Line" temporary;
-
+        ShowRegDoc: Codeunit "PTE DC2OPP Show. Reg. Doc.";
         NoSeriesMgmt: Codeunit NoSeriesManagement;
         ShowDocument: Boolean;
         PmtLineEntryNo: Integer;
@@ -25,12 +23,6 @@ codeunit 61150 "OPP DC Avis - Register"
         end;
         Rec.TestField(Rec.OK);
 
-        // Set Journal description
-        /*IF Rec.Description = '' THEN
-            Rec.Description := CopyStr(CaptureMgnt.GetText(Rec, CDCTemplateField.Type::Header, 'DESC', 0), 1, MaxStrLen(Rec.Description));
-        IF Rec.Description = '' THEN
-            Rec.Description := CopyStr(CDCTemplate.Description, 1, MaxStrLen(Rec.Description));
-        */
         if not ImpInterfaceTemplField.Get(Rec."Template No.", ImpInterfaceTemplField.Type::Header, 'IMPINTERFACE') then
             exit;
 
@@ -55,7 +47,6 @@ codeunit 61150 "OPP DC Avis - Register"
         PmtImportRegister.Validate("Import Time", Time);
         PmtImportRegister.Validate("User ID", CopyStr(USERID(), 1, MaxStrLen(PmtImportRegister."User ID")));
         PmtImportRegister.Validate("In Progress", TRUE);
-        //PmtImportRegister.Validate("Statement No.", FORMAT(PmtImportInterface."Last Statement"));
 
         RecRef.GETTABLE(PmtImportRegister);
 
@@ -85,9 +76,9 @@ codeunit 61150 "OPP DC Avis - Register"
             CODEUNIT.RUN(CDCTemplate."Codeunit ID: After Step 2", Rec);
 
         Rec."Created Doc. Table No." := Database::"OPP Pmt. Import Register";
-        //Document."Created Doc. Subtype" := PurchHeader."Document Type";
         Rec."Created Doc. No." := PmtImportRegister."No.";
         Rec.Modify();
+
         case CDCTemplate."Show Document After Register" of
             CDCTemplate."Show Document After Register"::Always:
                 ShowDocument := true;
@@ -95,27 +86,10 @@ codeunit 61150 "OPP DC Avis - Register"
                 ShowDocument := Confirm('Sollen die erzeugten Importzeilen angezeigt werden?', false);
         end;
 
-        if ShowDocument then begin
-            OPPImportLines.SetRange("Pmt. Import Interface Code", PmtImportInterface.Code);
-            OPPImportLines.SetRange("Statement No.", Rec."No.");
-            if OPPImportLines.IsEmpty then
-                error('Es wurden keine Importzeilen an das OPP Import Journal übergeben');
-            page.Run(5157819, OPPImportLines);
-        end;
-
+        if ShowDocument then
+            ShowRegDoc.ShowPmtImpJnlLines(Rec);
     end;
 
-
-
-    /*
-    local procedure GetNextPmtImportLineEntryNo(): Integer
-    begin
-        if PmtImportLine.FindLast() then
-            exit(PmtImportLine."Entry No." + 1)
-        else
-            exit(1);
-    end;
-*/
     procedure InsertLine(CDCDoc: Record "CDC Document"; CDCTempDocLine: Record "CDC Temp. Document Line"; var PmtImportRegister: Record "OPP Pmt. Import Register"; var CurrEntryNo: Integer);
     var
         PmtImportLine: Record "OPP Pmt. Import Line";
@@ -150,7 +124,6 @@ codeunit 61150 "OPP DC Avis - Register"
             PmtImportLine.Validate("Posting Date", PmtImportRegister."Statement Date");
 
         PmtImportLine.Insert(true);
-        //;
     END;
 
     VAR

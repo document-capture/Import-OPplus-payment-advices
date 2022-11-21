@@ -45,13 +45,27 @@ codeunit 61152 "PTE DC2OPP Line Validation"
         */
         Field.SETRANGE("Template No.", Rec."Template No.");
         Field.SETRANGE(Type, Field.Type::Line);
+        Field.SetRange(Required, true);
         IF Field.FINDSET THEN
             REPEAT
                 IF NOT CaptureMgt.IsValidValue(Field, Rec."Document No.", Rec."Line No.") THEN BEGIN
-                    Rec.OK := FALSE;
+                    Rec.Skip := true;
                     EXIT;
                 END;
-            UNTIL Field.NEXT = 0;
+            UNTIL (Field.Next() = 0) or (Rec.Skip);
+
+        if (Rec.Skip) then
+            exit;
+
+        Field.SetRange(Required);
+        IF Field.FINDSET THEN
+            REPEAT
+                IF NOT CaptureMgt.IsValidValue(Field, Rec."Document No.", Rec."Line No.") THEN begin
+                    Rec.OK := false;
+                    exit;
+                end;
+            UNTIL (Field.Next() = 0);
+
 
         /*
         IF CurrencyCode = '' THEN BEGIN
